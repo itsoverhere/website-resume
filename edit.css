@@ -1,0 +1,132 @@
+article.paper footer{
+    display:flex;
+/*    flex-direction: row-reverse;*/
+    justify-content: flex-end;
+}
+
+div.delete{   
+    display:inline;
+    
+    padding:4px;
+    
+    background-color:#1d894b;
+    transition: background-color 2s ease;
+    
+    cursor:pointer;
+}
+
+div.delete:hover{
+    background-color: orangered;
+    transition: background-color 2s ease;
+}
+
+div.lightbox{
+    position:absolute;
+    top:0;
+    left:0;
+    background-color: #04213e;
+
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    text-align: center;
+    
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    
+    overflow-x: hidden;
+/*    overflow-y: scroll;*/
+}
+
+div.lightbox form{
+    width:300px;
+    color:white; 
+    
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    
+}
+
+
+div.lightbox form input{
+    width:100%;
+    
+    display:block;
+    padding:18px;
+    margin-bottom:12px;
+    
+    font-size: 1em;
+    
+    border:0;
+}
+
+div.lightbox form input:focus{
+    outline:none;
+    box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
+}
+
+
+div.lightbox form input[type="submit"]{
+    background-color:#4cc482;
+    color:white;
+    font-weight: 600;
+    transition: background-color 1s ease;
+    
+    cursor:pointer;
+}
+
+
+
+div.lightbox form input[type="submit"]:hover{
+/*    background-color:#155696;*/
+    background-color:#28a25f;
+    transition: background-color 1s ease;
+}
+
+header.paper{
+    display:flex;
+    justify-content: space-between;
+}
+
+header.paper h3.paper.add{
+    cursor: pointer;
+    opacity:0.8;
+    
+    transition: all 1s ease;
+}
+
+
+header.paper h3.paper.add:hover{
+    opacity:1.0;
+    
+    transition: all 1s ease;
+}
+
+main{
+    display:none;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

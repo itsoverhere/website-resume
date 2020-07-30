@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    
+    <link rel="stylesheet" href="main.css" type="text/css">
+    <link rel="stylesheet" href="edit.css" type="text/css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <meta name="theme-color" content="#ffffff">
+
+    <script src="jquery.js"></script>
+
+    <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+
+
+            var app = document.getElementById('greeting');
+
+            var typewriter = new Typewriter(app, {
+                loop: true,
+                cursor: ""
+            });
+
+            typewriter.typeString('Hi!')
+                .pauseFor(500)
+                .deleteChars(1)
+                .typeString(', my name is Courtney 👩🏻')
+                .pauseFor(1500)
+                .deleteAll()
+                .typeString('Welcome to my website!')
+                .pauseFor(2500)
+                .start();
+
+            // From CSS-tricks 
+            // https://css-tricks.com/snippets/jquery/smooth-scrolling/
+
+            $('a[href*="#"]')
+                // Remove links that don't actually link to anything
+                .not('[href="#"]')
+                .not('[href="#0"]')
+                .click(function(event) {
+                    // On-page links
+                    if (
+                        location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') &&
+                        location.hostname == this.hostname
+                    ) {
+                        // Figure out element to scroll to
+                        var target = $(this.hash);
+                        target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                        // Does a scroll target exist?
+                        if (target.length) {
+                            // Only prevent default if animation is actually gonna happen
+                            event.preventDefault();
+                            $('html, body').animate({
+                                scrollTop: target.offset().top
+                            }, 1000);
+                        }
+                    }
+                });
+
+
+
+        });
+
+    </script>
+
+    <!--  Firebase module  -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+    
+    <script src="firebase-config.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+
+            // Initialize Firebase with a "default" Firebase project
+            var defaultProject = firebase.initializeApp(firebaseConfig);
+//
+//            console.log(defaultProject.name); // "[DEFAULT]"
+//
+////            var defaultFirestore = defaultProject.firestore();
+
+            var query = firebase.firestore()
+                .collection('research').orderBy("year", "desc");;
+          
+            // Start listening to the query.
+            query.onSnapshot(function(snapshot) {
+                snapshot.docChanges().forEach(function(change) {
+                    if (change.type === 'removed') {
+                        //                    deleteMessage(change.doc.id);
+                        console.log(change.doc.id)
+                    } else {
+                        var data = change.doc.data();
+                        
+                        var paperArticle = document.createElement("article");
+
+                        var paperTitle = document.createElement("div");
+                        var paperUrl = document.createElement("a");
+                        var paperAuthors = document.createElement("div");
+                        var paperPublication = document.createElement("div");
+                        var paperYear = document.createElement("div");
+                        
+                        $(paperUrl).text(data.title);
+                        $(paperUrl).attr("href", data.url);
+
+                        $(paperAuthors).text(data.authors);
+                        $(paperPublication).text(data.publication);
+                        $(paperYear).text(data.year);
+
+
+                        $(paperArticle).addClass("paper")
+                        $(paperTitle).addClass("paper-title");
+                        $(paperAuthors).addClass("paper-author");
+                        $(paperPublication).addClass("paper-publication");
+                        $(paperYear).addClass("paper-year");
+
+                        $(paperTitle).append(paperUrl);
+
+                        $(paperArticle).append(paperTitle);
+                        $(paperArticle).append(paperAuthors);
+                        $(paperArticle).append(paperPublication);
+                        $(paperArticle).append(paperYear);
+
+                        $("div.research").append(paperArticle);
+                    }
+                });
+            });
+
+            
+            
+        });
+
+    </script>
+
+    <title>
+        Courtney
+    </title>
+
+</head>
+
+
+<body>
+
+    <a name="home"></a>
+    <section class="section-intro">
+        <nav>
+            <img src="favicon_io/favicon-32x32.png">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#research">Research</a></li>
+                <li><a href="#work">Work</a></li>
+                <li><a href="#about-me">About Me</a></li>
+            </ul>
+        </nav>
+        <div class="greeting" id="greeting">
+            <!--                Hi, I'm Courtney!-->
+        </div>
+    </section>
+
+    <a name="research"></a>
+    <section class="section-research">
+        <div class="research">
+            
+            <h3>Research</h3>
+            
+<!--
+            <article class="paper">
+                <div class="paper-title">
+                    <a href="https://link.springer.com/chapter/10.1007/978-4-431-54436-4_19" target="_blank"> Mobile indoor positioning using Wi-Fi localization and image processing </a>
+                </div>
+                <div class="paper-author">
+                    JC Ching, C Domingo, K Iglesia, C Ngo, N Chua
+                </div>
+                <div class="paper-publication">
+                    Theory and Practice of Computation, 242-256
+                </div>
+                <div class="paper-year">
+                    2013
+                </div>
+            </article>
+-->
+        </div>
+
+    </section>
+
+    <a name="work"></a>
+
+    <section class="section-work">
+
+        <div>
+            <h3>Work</h3>
+            <div class="grid-work">
+                <article class="work">
+                    <div class="work-title">
+                        <a href="https://play.google.com/store/apps/details?id=edu.dlsu.censer.crabifier&hl=en" target="_blank">Crabifier</a>
+                    </div>
+                    <img src="work-media/crabifier.png">
+                    <div class="work-description">
+                        Android app to classify your mudcrab to its crab species (serrata, tranquebarica, olivacea). Just point your camera on the crab to know.
+                    </div>
+                </article>
+                <article class="work">
+                    <div class="work-title">
+                        <a href="https://play.google.com/store/apps/details?id=edu.dlsu.zep.zepapp&hl=en" target="_blank">Ahon survey tool</a>
+                    </div>
+                    <img src="work-media/ahon.png">
+                    <div class="work-description">
+                        A survey app for the Zero Extreme Poverty Ahon project
+                    </div>
+                </article>
+
+                <article class="work">
+                    <div class="work-title">
+                        <a href="https://play.google.com/store/apps/details?id=com.edu.dlsu.whibble&hl=en&showAllReviews=true" target="_blank">Whibble</a>
+                    </div>
+                    <img src="work-media/whibble.png">
+                    <div class="work-description">
+                        An app I supervised with student-developers Victoria Angela Acorda, Richelle Chua, and Jed Pangilinan.
+                        <br> Having trouble picking out a fun game to play with your friends? Whibble is a game where laughter is guaranteed. It is based on the telephone/whisper game but tweaked with drawings and guesses! At the end of the game, everyone gets to see how each player’s drawings and guesses can turn a word into something funny! No drawing skills required! Just have fun and enjoy the unexpected evolutions of the words!
+
+                        <br> Whibble. Scribble the guess. Guess the scribble.
+                    </div>
+                </article>
+
+                <article class="work">
+                    <div class="work-title">
+                        <a href="https://play.google.com/store/apps/details?id=tapales.manto.bhuller.loot&hl=en" target="_blank">Loot</a>
+                    </div>
+                    <img src="work-media/loot.png">
+                    <div class="work-description">
+                        An app I supervised with student-developers Chino Tapales, Baldip Bhuller, and Joseph Manto.
+                        <br> Loot is not your ordinary expense tracker. Aside from keeping track of your expenses and savings, Loot can also reward you for your actions. Think of it more like a game, the more you play, the better you get! In this case, the more money you save! Loot is dead simple to use with its clean and simple interface. With Loot, you can: see exactly your money goes, easily manage your expenses, track your account and unlock achievements.
+                    </div>
+
+
+                </article>
+
+                <article class="work">
+                    <div class="work-title">
+                        <a href="https://play.google.com/store/apps/details?id=ph.edu.dlsu.mobapde.copy_simon&hl=en_US" target="_blank">Copy Simon</a>
+                        <img src="work-media/copy-simon.png">
+                    </div>
+                    <div class="work-description">
+                        An app I supervised with student-developers Raafi Bandrang, Allen Gapuz, JM Hilario.
+                        <br> How good do you think your memory is? Put it to the test with Copy Simon: The Ultimate Memory Game.
+                        <br> When the game starts, the buttons would light up in a random order and play sounds that vary per button. The player then would have to repeat the same sequence depending on the color and order that it lit up. When the player inputs the wrong sequence then it’s GAME OVER.
+                    </div>
+                </article>
+
+
+                <article class="work">
+                    <div class="work-title">
+                        <a href="https://play.google.com/store/apps/details?id=com.dlsu.julia.wirtec_iticket" target="_blank">iTicket</a>
+                    </div>
+                    <img src="work-media/iticket.png">
+                    <div class="work-description">
+                        An app developed by Neil Capistrano, Julia Lopez-Pozas, and Glenn Reyes, with the my supervision.
+                        <br> iTicket makes use of NFC to validate tickets from attendee to event organizer. In doing so, it reduces the need for physical tickets and lining up to receive them. This app can be used for concerts, seminars, plays, parties, and all events in which you wish to manage attendance efficiently!
+                        <br> Create, manage events. Reserve, validate tickets. All in one app.
+                    </div>
+
+                </article>
+
+                <article class="work">
+                    <div class="work-title">
+                        <a href="https://play.google.com/store/apps/details?id=edu.dlsu.joannalau.guessthefoodv1" target="_blank">Guess the Food</a>
+                    </div>
+                    <img src="work-media/guess-the-food.png">
+                    <div class="work-description">
+                        An app developed by Joanna Lau, Miguel Gomez, Ramon Panganiban with the my supervision.
+                        <br> Guess The Food is a mobile game application that tests users of their knowledge on food names. The game will have multiple food packages such as fruits &amp; vegetables, junk food, etc. Earn coins to buy hints by guessing quickly.
+                    </div>
+
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <a name="about-me"></a>
+    <section class="section-about-me">
+        <div>
+            <h3>About me</h3>
+            <div>
+                Hi, my name is Courtney. I started teaching in 2014 right after I finished my Master's in DLSU, mainly teaching web development, mobile development, and machine learning. I've recently got into watching documentaries (Free Solo, Icarus) and short and already-finished series (Chernobyl, Avatar: The Last Airbender) online. If you can recommend new titles, I'd really appreciate it!
+            </div>
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        <div>
+            Favicon made by <a href="https://www.flaticon.com/free-icon/woman_702011" title="monkik">monkik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+
+            <div>
+                <a href="html.html">HTML version</a>
+            </div>
+            <div>
+                <a href="html+css.html">HTML+CSS version</a>
+            </div>
+            <div>
+                <a href="html+css+js.html">HTML+CSS+JS version</a>
+            </div>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>
